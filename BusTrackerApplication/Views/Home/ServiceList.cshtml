@@ -1,0 +1,22 @@
+﻿@model IEnumerable<BusTrackerApplication.Models.DocumentModel.Bus>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div>
+            @foreach (var bus in Model)
+            {
+                <p>@bus.Route</p>
+            }
+    </div>
+</body>
+</html>

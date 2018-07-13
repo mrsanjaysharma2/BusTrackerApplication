@@ -4,11 +4,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-
+using Microsoft.Azure.Documents;
+using Microsoft.Azure.Documents.Client;
+using Microsoft.Azure.Documents.Spatial;
+using CosmosModel = BusTrackerApplication.Models.DocumentModel;
 namespace BusTrackerAplplication
 {
     public class HomeController : Controller
     {
+
+        private DocumentClient Client;
+        private string DatabaseUrl= "https://bustracker.documents.azure.com:443/";
+        private string PrimaryKey = "your key here";
+
+        public HomeController()
+        {
+            Client = new DocumentClient(new Uri(DatabaseUrl), PrimaryKey);
+        }
         // GET: Home
         public ActionResult Index(string id)
         {
@@ -103,5 +115,11 @@ namespace BusTrackerAplplication
         {
             return PartialView("ShowCurrentLocation");
         }
+
+        public ActionResult ServiceList() {
+            IQueryable<CosmosModel.Bus> buses = this.Client.CreateDocumentQuery<CosmosModel.Bus>(UriFactory.CreateDocumentCollectionUri("BusTrackerDb", "BusCollection"));
+            return View(buses.ToList());
+        }
+
     }
 }
